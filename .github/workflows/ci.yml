@@ -28,6 +28,7 @@ jobs:
             ~/.cargo/git
             target
           key: cargo-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}
+      - run: scripts/check-secret-files.sh
       - run: cargo fmt --check
       - run: cargo clippy --all-targets --all-features --locked
       - run: cargo test --all-features --locked

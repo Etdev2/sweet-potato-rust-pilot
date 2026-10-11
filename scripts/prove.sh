@@ -10,7 +10,7 @@ ticket="${1:?usage: scripts/prove.sh <owner/repo#issue>}"
 cd "$(dirname "$0")/.."
 
 if ! git diff --quiet -- . ':!proof' || [ -n "$(git ls-files --others --exclude-standard -- . ':!proof')" ]; then
-  echo "Stage every change outside proof/ first, so the proof matches the code it ran against." >&2
+  echo "Unstaged or untracked files exist outside proof/. Stage the files your change needs by name, and delete scratch files, so the proof matches the code it ran against." >&2
   exit 2
 fi
 

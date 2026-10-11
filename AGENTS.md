@@ -17,6 +17,8 @@ Use the `verify` skill in `.claude/skills/verify/`. Every pull request commits a
 | Arithmetic overflow panics in release builds as well. | Hard check: `overflow-checks = true` in `[profile.release]` |
 | The toolchain and dependency versions are fixed. | Hard check: `rust-toolchain.toml`, and `--locked` in CI |
 | Every pull request carries fresh, passing proof. | Hard check: `scripts/check-proof.sh` in CI |
+| No secret-looking file (env files, private keys, credential files) is committed. | Hard check: `.gitignore`, plus `scripts/check-secret-files.sh` in CI |
+| Tokens and keys live in GitHub secrets, never in code. | Review; file names alone can't catch a key pasted into code |
 | A lint exception uses `#[expect(lint, reason = "...")]`, never `#[allow]`, and fails once the code no longer needs it. | Hard check: `allow_attributes` and `allow_attributes_without_reason` in `Cargo.toml` |
 | An exception's reason explains why the safer form can't work. | Review |
 | Model states with enums that carry each state's data. Parse external input once at the edge. | Review |

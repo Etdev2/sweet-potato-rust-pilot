@@ -1,10 +1,12 @@
 $ cargo fmt --check
 [exit 0]
 $ cargo clippy --all-targets --all-features --locked
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.04s
+    Checking rust-pilot v0.1.0 (/home/user/sweet-potato-rust-pilot)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.71s
 [exit 0]
 $ cargo test --all-features --locked
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
+   Compiling rust-pilot v0.1.0 (/home/user/sweet-potato-rust-pilot)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.41s
      Running unittests src/lib.rs (target/debug/deps/rust_pilot-23d88207a13327ed)
 
 running 0 tests
@@ -33,10 +35,10 @@ test src/lib.rs - TrustStage::builder_authority (line 28) ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-all doctests ran in 0.18s; merged doctests compilation took 0.18s
+all doctests ran in 0.99s; merged doctests compilation took 0.98s
 [exit 0]
 $ cargo test --doc --locked
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
    Doc-tests rust_pilot
 
 running 1 test
@@ -44,5 +46,5 @@ test src/lib.rs - TrustStage::builder_authority (line 28) ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-all doctests ran in 0.16s; merged doctests compilation took 0.16s
+all doctests ran in 0.22s; merged doctests compilation took 0.22s
 [exit 0]

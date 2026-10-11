@@ -9,7 +9,7 @@ rust-pilot is a command-line tool. Its real artifact is the release binary, run 
 
 ## Steps
 
-1. Stage your whole change: `git add -A`.
+1. Stage the files your change needs, by name: `git add src/lib.rs tests/cli.rs`. Never use `git add -A` or `git add .`, which can sweep in secrets or scratch files. Delete scratch files instead of committing them.
 2. Run `scripts/prove.sh <owner/repo#issue>`. It runs every lane check, runs `scripts/verify.sh` against the release binary, and writes `proof/`.
 3. Read `proof/verify.txt`. If the result is not `PASS`, fix the cause and go back to step 1. Never edit `proof/` by hand.
 4. Commit `proof/` with your change.
