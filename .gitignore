@@ -1,0 +1,13 @@
+/target
+
+# Secrets never enter a commit. scripts/check-secret-files.sh fails CI if one does.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials.json
