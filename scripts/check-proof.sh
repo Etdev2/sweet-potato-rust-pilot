@@ -4,7 +4,6 @@ set -euo pipefail
 # Fails a pull request whose proof bundle is missing, malformed, not PASS, or
 # captured for different code than the pull request now contains.
 repo="${1:-.}"
-manifest="$repo/proof/manifest.json"
 here="$(cd "$(dirname "$0")" && pwd)"
 
 fail() {
@@ -12,7 +11,37 @@ fail() {
   exit 1
 }
 
-[ -f "$manifest" ] || fail "No proof bundle. Run the project's verification skill, then commit proof/manifest.json and its evidence."
+# Passes only when $1 is exactly one committed regular file. A literal pathspec
+# stops "proof/*.log" matching by pattern, and the mode check stops a symlink
+# or submodule standing in for bytes that were never committed.
+committed_file_mode() {
+  local entry
+  # -z prints the raw path, so core.quotePath can't escape non-ASCII names.
+  # Read only the first NUL-terminated record.
+  IFS= read -r -d '' entry \
+    < <(git -C "$repo" ls-files -z --full-name --format='%(objectmode) %(path)' -- ":(top,literal)$1") \
+    || return 1
+  [ "${entry#* }" = "$1" ] || return 1
+  case "${entry%% *}" in
+    100644|100755) return 0 ;;
+    *) return 2 ;;
+  esac
+}
+
+code=0
+committed_file_mode proof/manifest.json || code=$?
+case "$code" in
+  0) ;;
+  1) [ -e "$repo/proof/manifest.json" ] \
+       || fail "No proof bundle. Run the project's verification skill, then commit proof/manifest.json and its evidence."
+     fail "proof/manifest.json is not committed. Commit the manifest with its evidence." ;;
+  *) fail "proof/manifest.json is not a regular file. Commit the manifest itself, not a symlink." ;;
+esac
+
+# Validate the committed manifest, not whatever the working tree holds now.
+manifest=$(mktemp)
+trap 'rm -f "$manifest"' EXIT
+git -C "$repo" show ":proof/manifest.json" > "$manifest"
 jq empty "$manifest" 2>/dev/null || fail "proof/manifest.json is not valid JSON."
 
 problems=$(jq -r '
@@ -44,6 +73,8 @@ problems=$(jq -r '
     | "behaviorChanged is false, so noBehaviorReason must say why no user-visible proof applies."),
   (.evidence[]? | select((.path | nonempty and startswith("proof/") and (contains("..") | not)) | not)
     | "Evidence path \(.path | tojson) must sit inside proof/."),
+  (.evidence[]? | select(.path | type == "string" and test("[[:cntrl:]]"))
+    | "Evidence path \(.path | tojson) must not contain a newline or other control character."),
   (.evidence[]? | select(.kind | IN(kinds[]) | not)
     | "Evidence kind \(.kind | tojson) must be one of: \(kinds | join(", ")).")
   , (.evidence[]? | select(.shows | nonempty | not)
@@ -58,12 +89,18 @@ if [ -n "$problems" ]; then
 fi
 
 while IFS= read -r path; do
-  git -C "$repo" ls-files --error-unmatch -- "$path" >/dev/null 2>&1 \
-    || fail "Evidence $path is not committed."
+  code=0
+  committed_file_mode "$path" || code=$?
+  case "$code" in
+    0) ;;
+    2) fail "Evidence $path is not a regular file. Commit the evidence itself, not a symlink or submodule." ;;
+    *) fail "Evidence $path is not committed." ;;
+  esac
 done < <(jq -r '.evidence[]?.path' "$manifest")
 
+# Count the committed bytes in proof/, not whatever the working tree points to.
 cap=$((5 * 1024 * 1024))
-size=$(git -C "$repo" ls-files -z -- proof | (cd "$repo" && xargs -0 -r cat) | wc -c)
+size=$(git -C "$repo" ls-files --format='%(objectsize)' -- ':(top)proof' | awk '{ total += $1 } END { print total + 0 }')
 [ "$size" -le "$cap" ] \
   || fail "proof/ holds $size bytes, over the 5 MB cap. Compress screenshots, trim logs, or link a long video from the pull request instead."
 

@@ -1,14 +1,22 @@
 {
   "schemaVersion": 1,
-  "ticket": "Etdev2/sweet-potato#4",
-  "sourceDigest": "sha256:eb6f019d6509cc9290452ab908631489c6ab9754fbf9217f9e18a2fcbe975a12",
-  "capturedAt": "2026-10-11T03:29:42Z",
+  "ticket": "Etdev2/sweet-potato#24",
+  "sourceDigest": "sha256:604393002435ecb1d1e5f16990b8ec4177daaf7378d85011ba7872bff2eb144c",
+  "capturedAt": "2026-10-11T20:41:03Z",
   "result": "PASS",
   "verification": {
     "command": "scripts/verify.sh",
     "fixture": "the feature map in .claude/skills/verify/SKILL.md"
   },
   "commands": [
+    {
+      "command": "scripts/check-pinned-scripts.sh",
+      "exitCode": 0
+    },
+    {
+      "command": "scripts/test-proof-tools.sh",
+      "exitCode": 0
+    },
     {
       "command": "cargo fmt --check",
       "exitCode": 0
@@ -24,19 +32,18 @@
     {
       "command": "cargo test --doc --locked",
       "exitCode": 0
+    },
+    {
+      "command": "scripts/verify.sh",
+      "exitCode": 0
     }
   ],
   "behaviorChanged": true,
   "evidence": [
     {
-      "path": "proof/verify.txt",
+      "path": "proof/verification.txt",
       "kind": "terminal",
-      "shows": "Each feature in the map run through the release binary, with its output and exit code."
-    },
-    {
-      "path": "proof/checks.txt",
-      "kind": "log",
-      "shows": "Output of every lane check."
+      "shows": "Every lane check's output and exit code, then each feature in the map run through the release binary, ending in RESULT: PASS."
     }
   ]
 }

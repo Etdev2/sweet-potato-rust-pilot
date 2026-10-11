@@ -5,5 +5,7 @@ set -euo pipefail
 # by path, mode and content. Stage the change before running it.
 repo="${1:-.}"
 
-listing=$(git -C "$repo" ls-files --stage --full-name -- ':/' ':(top,exclude)proof')
-printf 'sha256:%s\n' "$(printf '%s\n' "$listing" | sha256sum | cut -d' ' -f1)"
+# -z prints raw, NUL-separated paths, so core.quotePath and other display
+# settings cannot change the digest.
+digest=$(git -C "$repo" ls-files --stage -z --full-name -- ':/' ':(top,exclude)proof' | sha256sum | cut -d' ' -f1)
+printf 'sha256:%s\n' "$digest"
