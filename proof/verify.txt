@@ -1,0 +1,26 @@
+$ rust-pilot stage-0-unverified
+stage-0-unverified: no builder runs
+[exit 0]
+ok   stage lookup: unverified
+
+$ rust-pilot stage-1-supervised
+stage-1-supervised: one builder runs while Et inspects every step
+[exit 0]
+ok   stage lookup: supervised
+
+$ rust-pilot stage-2-proven
+stage-2-proven: one builder finishes a ticket on its own; Et still merges
+[exit 0]
+ok   stage lookup: proven
+
+$ rust-pilot stage-3-automerge
+unknown trust stage "stage-3-automerge"; use stage-0-unverified, stage-1-supervised or stage-2-proven
+[exit 2]
+ok   unknown stage is rejected
+
+$ rust-pilot 
+usage: rust-pilot <trust-stage>
+[exit 2]
+ok   missing argument prints usage
+
+RESULT: PASS

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "ticket": "Etdev2/sweet-potato#4",
+  "sourceDigest": "sha256:8e55ad41aa9c7f7cc441012a0ffbbf5d69c6cd09d79e617a20197a84d7c61e63",
+  "capturedAt": "2026-10-11T02:28:43Z",
+  "result": "PASS",
+  "verification": {
+    "command": "scripts/verify.sh",
+    "fixture": "the feature map in .claude/skills/verify/SKILL.md"
+  },
+  "commands": [
+    {
+      "command": "cargo fmt --check",
+      "exitCode": 0
+    },
+    {
+      "command": "cargo clippy --all-targets --all-features --locked",
+      "exitCode": 0
+    },
+    {
+      "command": "cargo test --all-features --locked",
+      "exitCode": 0
+    },
+    {
+      "command": "cargo test --doc --locked",
+      "exitCode": 0
+    }
+  ],
+  "behaviorChanged": true,
+  "evidence": [
+    {
+      "path": "proof/verify.txt",
+      "kind": "terminal",
+      "shows": "Each feature in the map run through the release binary, with its output and exit code."
+    },
+    {
+      "path": "proof/checks.txt",
+      "kind": "log",
+      "shows": "Output of every lane check."
+    }
+  ]
+}
