@@ -1,0 +1,3 @@
+[alias]
+# The lane's tooling: `cargo xtask <task>`. See xtask/src/main.rs.
+xtask = "run --quiet --locked --package xtask --"
