@@ -1,6 +1,6 @@
 /target
 
-# Secrets never enter a commit. scripts/check-secret-files.sh fails CI if one does.
+# Secrets never enter a commit. `cargo xtask check-secret-files` fails CI if one does.
 .env
 .env.*
 !.env.example

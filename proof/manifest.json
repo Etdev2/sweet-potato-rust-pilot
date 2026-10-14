@@ -1,40 +1,40 @@
 {
   "schemaVersion": 1,
-  "ticket": "Etdev2/sweet-potato#24",
-  "sourceDigest": "sha256:604393002435ecb1d1e5f16990b8ec4177daaf7378d85011ba7872bff2eb144c",
-  "capturedAt": "2026-10-11T20:41:03Z",
+  "ticket": "Etdev2/sweet-potato#39",
+  "sourceDigest": "sha256:31b1d7d12a012003b4c83d5c4c52081b9b97055879d3b1714993aa1e537edcfc",
+  "capturedAt": "2026-10-14T03:45:20Z",
   "result": "PASS",
   "verification": {
-    "command": "scripts/verify.sh",
+    "command": "cargo xtask verify",
     "fixture": "the feature map in .claude/skills/verify/SKILL.md"
   },
   "commands": [
     {
-      "command": "scripts/check-pinned-scripts.sh",
+      "command": "cargo xtask check-pinned-scripts",
       "exitCode": 0
     },
     {
-      "command": "scripts/test-proof-tools.sh",
+      "command": "cargo xtask test-proof-tools",
       "exitCode": 0
     },
     {
-      "command": "cargo fmt --check",
+      "command": "cargo fmt --all --check",
       "exitCode": 0
     },
     {
-      "command": "cargo clippy --all-targets --all-features --locked",
+      "command": "cargo clippy --workspace --all-targets --all-features --locked",
       "exitCode": 0
     },
     {
-      "command": "cargo test --all-features --locked",
+      "command": "cargo test --workspace --all-features --locked",
       "exitCode": 0
     },
     {
-      "command": "cargo test --doc --locked",
+      "command": "cargo test --workspace --doc --locked",
       "exitCode": 0
     },
     {
-      "command": "scripts/verify.sh",
+      "command": "cargo xtask verify",
       "exitCode": 0
     }
   ],

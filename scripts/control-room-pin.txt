@@ -1,5 +1,5 @@
 # Copied byte for byte from Etdev2/sweet-potato at commit 55f739aa8471f3ff54f91b83d59ccbc027a63a6b.
-# Lines are `git ls-tree` output for that commit; scripts/check-pinned-scripts.sh fails if a copy differs.
+# Lines are `git ls-tree` output for that commit; `cargo xtask check-pinned-scripts` fails if a copy differs.
 # To update: copy the files from a newer reviewed commit, regenerate these lines with git ls-tree, and say what changed in the pull request.
 100755 blob 3d146e60905d1b41ae81830bce10d4958c129bef	scripts/check-proof.sh
 100755 blob f782798f72cdca25f915fda052fce00b2bfd70b6	scripts/proof-digest.sh

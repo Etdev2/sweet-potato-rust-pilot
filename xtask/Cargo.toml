@@ -1,0 +1,13 @@
+[package]
+name = "xtask"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+# No dependencies: SHA-256 is small enough to carry in src/sha256.rs, and git
+# and jq are run as the shell scripts ran them.
+[dependencies]
+
+[lints]
+workspace = true

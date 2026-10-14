@@ -1,8 +1,8 @@
-$ scripts/check-pinned-scripts.sh
+$ cargo xtask check-pinned-scripts
 3 copied scripts match the pinned control-room commit.
 [exit 0]
 
-$ scripts/test-proof-tools.sh
+$ cargo xtask test-proof-tools
 ok   a bundle from the copied writer passes
 ok   evidence named by a pattern fails
 ok   evidence naming a directory fails
@@ -12,15 +12,15 @@ ok   the drift check catches a one-byte change to a copied script
 All proof-tool cases behave as specified.
 [exit 0]
 
-$ cargo fmt --check
+$ cargo fmt --all --check
 [exit 0]
 
-$ cargo clippy --all-targets --all-features --locked
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+$ cargo clippy --workspace --all-targets --all-features --locked
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.03s
 [exit 0]
 
-$ cargo test --all-features --locked
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+$ cargo test --workspace --all-features --locked
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.03s
      Running unittests src/lib.rs (target/debug/deps/rust_pilot-23d88207a13327ed)
 
 running 0 tests
@@ -40,7 +40,33 @@ test unknown_stage_is_rejected_with_the_valid_names ... ok
 test wrong_argument_count_prints_usage ... ok
 test each_stage_reports_its_builder_authority ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/xtask-7d6e105df4176bd4)
+
+running 2 tests
+test secrets::tests::flags_the_same_names_as_the_shell_pattern ... ok
+test sha256::tests::matches_the_fips_vectors ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/debug/deps/xtask-2da34e3eac3acfc5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/parity.rs (target/debug/deps/parity-f6143c7ab84387e0)
+
+running 6 tests
+test digest_of_an_empty_index_is_the_empty_hash ... ok
+test digest_matches_the_pinned_script_on_this_checkout ... ok
+test this_checkout_has_no_secret_files_and_matching_pins ... ok
+test pin_check_flags_missing_and_non_executable_copies ... ok
+test secret_check_matches_the_shell_pattern ... ok
+test digest_matches_the_pinned_script_on_awkward_paths ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 
    Doc-tests rust_pilot
 
@@ -49,11 +75,19 @@ test src/lib.rs - TrustStage::builder_authority (line 28) ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-all doctests ran in 0.32s; merged doctests compilation took 0.31s
+all doctests ran in 0.18s; merged doctests compilation took 0.17s
+   Doc-tests xtask
+
+running 1 test
+test xtask/src/sha256.rs - sha256::hex (line 83) ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.15s; merged doctests compilation took 0.15s
 [exit 0]
 
-$ cargo test --doc --locked
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.01s
+$ cargo test --workspace --doc --locked
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
    Doc-tests rust_pilot
 
 running 1 test
@@ -61,10 +95,18 @@ test src/lib.rs - TrustStage::builder_authority (line 28) ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
-all doctests ran in 0.31s; merged doctests compilation took 0.30s
+all doctests ran in 0.16s; merged doctests compilation took 0.16s
+   Doc-tests xtask
+
+running 1 test
+test xtask/src/sha256.rs - sha256::hex (line 83) ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+all doctests ran in 0.14s; merged doctests compilation took 0.14s
 [exit 0]
 
-$ scripts/verify.sh
+$ cargo xtask verify
 $ rust-pilot stage-0-unverified
 stage-0-unverified: no builder runs
 [exit 0]

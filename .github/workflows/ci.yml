@@ -28,14 +28,14 @@ jobs:
             ~/.cargo/git
             target
           key: cargo-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}
-      - run: scripts/check-secret-files.sh
-      - run: scripts/check-pinned-scripts.sh
-      - run: scripts/test-proof-tools.sh
-      - run: cargo fmt --check
-      - run: cargo clippy --all-targets --all-features --locked
-      - run: cargo test --all-features --locked
-      - run: cargo test --doc --locked
-      - run: scripts/verify.sh
+      - run: cargo xtask check-secret-files
+      - run: cargo xtask check-pinned-scripts
+      - run: cargo xtask test-proof-tools
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets --all-features --locked
+      - run: cargo test --workspace --all-features --locked
+      - run: cargo test --workspace --doc --locked
+      - run: cargo xtask verify
 
   proof:
     if: github.event_name == 'pull_request'
